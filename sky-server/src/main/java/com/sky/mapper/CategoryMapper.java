@@ -29,8 +29,14 @@ public interface CategoryMapper {
 
     /**
      *修改分类
-     * @param categoryDTO
+     * @param category
      */
     @AutoFill(OperationType.UPDATE)
     void update(Category category);
+
+    /**
+     * 新增分类
+     * @param category
+     */
+    void insert(Category category);
 }

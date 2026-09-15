@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.CategoryMapper">
+    <!-- 分页查询分类数据 -->
     <select id="page" resultType="com.sky.entity.Category">
         select id,
                type,
@@ -26,7 +27,7 @@
         create_time desc
     </select>
 
-
+    <!-- 修改分类数据 -->
     <update id="update" parameterType="Category">
         update category
         <set>
@@ -51,4 +52,10 @@
         </set>
         where id = #{id}
     </update>
+
+    <!-- 新增分类数据 -->
+    <insert id="insert" parameterType="Category">
+        insert into category (type, name, sort, status, create_time, update_time, create_user, update_user)
+        values (#{type}, #{name}, #{sort}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
+    </insert>
 </mapper>
