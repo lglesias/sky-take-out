@@ -16,6 +16,7 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 员工管理
+ * TODO：启用、禁用员工账号   编辑员工信息
+ * ClassName: EmployeeController
+ * Package: com.sky.controller.admin
+ * Description:
+ *
+ * @Author lglesias_
+ * @Create 2026/9/15 14:57
+ * @Version 1.0
  */
 @RestController
 @RequestMapping("/admin/employee")
@@ -120,5 +128,19 @@ public class EmployeeController {
         employeeService.save(employeeDTO);
         return Result.success();
     }
+
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工")
+    public Result<Employee> getById(@PathVariable Long id) {
+        log.info("根据id查询员工：{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
 
 }
