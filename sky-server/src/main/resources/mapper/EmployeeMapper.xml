@@ -2,4 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.EmployeeMapper">
+    <!--    根据用户名查询员工-->
+    <update id="editPassword" parameterType="com.sky.dto.PasswordEditDTO">
+        update employee
+        set password = #{newPassword}
+        where id = #{empId}
+    </update>
+    <!--    根据id查询员工-->
+    <select id="getById" resultType="com.sky.entity.Employee">
+        select *
+        from employee
+        where id = #{empId}
+    </select>
+    <!--    员工分页查询-->
+    <select id="page" resultType="com.sky.entity.Employee">
+        select id,
+        name,
+        username,
+        password,
+        phone,
+        sex,
+        id_number,
+        status,
+        create_time,
+        update_time,
+        create_user,
+        update_user
+        from employee
+        <where>
+            <if test="name != null">
+                name like CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        order by create_time asc
+    </select>
 </mapper>
