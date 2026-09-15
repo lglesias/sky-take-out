@@ -43,4 +43,10 @@ public interface EmployeeMapper {
      * @param employee
      */
     void insert(Employee employee);
+
+    /**
+     * 启用禁用员工账号
+     * @param employee
+     */
+    void StratOrStop(Employee employee);
 }

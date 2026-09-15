@@ -41,4 +41,11 @@ public interface EmployeeService {
      * @return
      */
     Employee getById(Long id);
+
+    /**
+     * 启用禁用员工
+     * @param status
+     * @param id
+     */
+    void StratOrStop(Integer status, Long id);
 }

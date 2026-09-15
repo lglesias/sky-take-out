@@ -13,13 +13,16 @@ import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.DeactivateYourOwnAccountException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import org.apache.http.MessageConstraintException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
@@ -136,6 +139,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getById(Long id) {
         return employeeMapper.getById(id);
+    }
+
+    /**
+     * 启用禁用员工
+     * @param status
+     * @param id
+     */
+    @Transactional
+    @Override
+    public void StratOrStop(Integer status, Long id) {
+        Long currentId = BaseContext.getCurrentId();
+        if (currentId.equals(id)){
+            throw new DeactivateYourOwnAccountException(MessageConstant.DONT_DEACTIVATE_YOUR_OWN_ACCOUNT);
+
+        }
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+         employeeMapper.StratOrStop(employee);
+
+
     }
 
 

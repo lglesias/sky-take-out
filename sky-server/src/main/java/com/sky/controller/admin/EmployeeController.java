@@ -142,5 +142,18 @@ public class EmployeeController {
         return Result.success(employee);
     }
 
+    /**
+     * 启用禁用员工
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用员工")
+    public Result StratOrStop(@PathVariable Integer status,Long id){
+        log.info("启用禁用员工：{}，{}", status, id);
+        employeeService.StratOrStop(status,id);
+        return Result.success();
+    }
 
 }

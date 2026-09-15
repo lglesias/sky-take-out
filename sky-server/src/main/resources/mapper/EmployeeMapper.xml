@@ -43,4 +43,10 @@
         values (#{name}, #{username}, #{password}, #{phone}, #{sex}, #{idNumber}, #{status}, #{createTime},
                 #{updateTime}, #{createUser}, #{updateUser})
     </insert>
+    <!--    启用、禁用员工账号-->
+    <update id="StratOrStop" parameterType="com.sky.entity.Employee">
+        update employee
+        set status = #{status}
+        where id = #{id}
+    </update>
 </mapper>
