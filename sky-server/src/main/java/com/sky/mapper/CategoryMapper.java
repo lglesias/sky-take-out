@@ -39,4 +39,10 @@ public interface CategoryMapper {
      * @param category
      */
     void insert(Category category);
+
+    /**
+     * 根据id删除分类
+     * @param id
+     */
+    void deleteById(Long id);
 }
