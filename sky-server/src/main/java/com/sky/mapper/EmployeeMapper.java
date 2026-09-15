@@ -37,4 +37,10 @@ public interface EmployeeMapper {
      * @return
      */
     Page<Employee> page(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 新增员工
+     * @param employee
+     */
+    void insert(Employee employee);
 }
