@@ -45,8 +45,9 @@ public interface EmployeeMapper {
     void insert(Employee employee);
 
     /**
+     * 修改员工信息
      * 启用禁用员工账号
      * @param employee
      */
-    void StratOrStop(Employee employee);
+    void update(Employee employee);
 }

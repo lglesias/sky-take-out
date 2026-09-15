@@ -48,4 +48,10 @@ public interface EmployeeService {
      * @param id
      */
     void StratOrStop(Integer status, Long id);
+
+    /**
+     * 修改员工信息
+     * @param employeeDTO
+     */
+    void update(EmployeeDTO employeeDTO);
 }

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO：启用、禁用员工账号   编辑员工信息
+ * TODO：   编辑员工信息
  * ClassName: EmployeeController
  * Package: com.sky.controller.admin
  * Description:
@@ -153,6 +153,19 @@ public class EmployeeController {
     public Result StratOrStop(@PathVariable Integer status,Long id){
         log.info("启用禁用员工：{}，{}", status, id);
         employeeService.StratOrStop(status,id);
+        return Result.success();
+    }
+
+    /**
+     * 修改员工信息
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改员工信息")
+    public Result<String> update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("修改员工信息：{}", employeeDTO);
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 
