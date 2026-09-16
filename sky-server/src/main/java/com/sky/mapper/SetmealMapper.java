@@ -30,4 +30,10 @@ public interface SetmealMapper {
      * @return
      */
     Page<Setmeal> page(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 新增套餐
+     * @param setmeal
+     */
+    void insert(Setmeal setmeal);
 }
