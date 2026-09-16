@@ -1,6 +1,9 @@
 package com.sky.controller.admin;
 
+import com.alibaba.druid.sql.PagerUtils;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import io.swagger.annotations.Api;
@@ -39,5 +42,19 @@ public class DishController {
         log.info("根据分类id查询菜品:{}", categoryId);
         List<Dish> dishList = dishService.list(categoryId);
         return Result.success(dishList);
+    }
+
+    /**
+     * 分页查询菜品数据
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/page")
+    @ApiOperation("分页查询菜品数据")
+    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO){
+        log.info("分页查询菜品数据: {}", dishPageQueryDTO);
+        PageResult pageResult = dishService.page(dishPageQueryDTO);
+        return Result.success(pageResult);
     }
 }

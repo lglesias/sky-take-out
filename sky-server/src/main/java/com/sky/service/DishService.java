@@ -1,6 +1,8 @@
 package com.sky.service;
 
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
+import com.sky.result.PageResult;
 
 import java.util.List;
 
@@ -22,4 +24,11 @@ public interface DishService {
      */
     List<Dish> list(Long categoryId);
 
+    /**
+     * 分页查询菜品数据
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    PageResult page(DishPageQueryDTO dishPageQueryDTO);
 }
