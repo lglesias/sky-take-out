@@ -1,5 +1,8 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Setmeal;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -20,4 +23,11 @@ public interface SetmealMapper {
      * @return
      */
     Integer countByCategoryId(Long id);
+
+    /**
+     * 套餐分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    Page<Setmeal> page(SetmealPageQueryDTO setmealPageQueryDTO);
 }
