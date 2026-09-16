@@ -1,6 +1,9 @@
 package com.sky.mapper;
 
+import com.sky.entity.Dish;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * TODO：
@@ -20,4 +23,11 @@ public interface DishMapper {
      * @return
      */
     Integer countByCategoryId(Long id);
+
+    /**
+     * 根据条件查询菜品列表
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
 }

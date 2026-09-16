@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * TODO：修改套餐  分页查询 套餐起售、停售 批量删除套餐 新增套餐 根据id查询套餐
+ * TODO：修改套餐  套餐起售、停售 批量删除套餐 新增套餐 根据id查询套餐
  * ClassName: SetmealController
  * Package: com.sky.controller.admin
  * Description:
@@ -41,4 +41,6 @@ public class SetmealController {
         PageResult pageResult = setmealService.page(setmealPageQueryDTO);
         return Result.success(pageResult);
     }
+
+
 }
