@@ -1,7 +1,7 @@
 package com.sky.exception;
 
 /**
- * TODO：
+ * 禁止禁用自己的账号
  * ClassName: DeactivateYourOwnAccountException
  * Package: com.sky.exception
  * Description:
