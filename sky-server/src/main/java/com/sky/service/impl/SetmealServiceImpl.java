@@ -123,6 +123,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 根据id查询套餐
+     *
      * @param id
      * @return
      */
@@ -134,6 +135,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 修改套餐
+     *
      * @param setmealDTO
      */
     @Override
@@ -159,5 +161,30 @@ public class SetmealServiceImpl implements SetmealService {
         });
         //保存套餐和菜品的关联数据
         setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+    /**
+     * 批量删除套餐
+     *
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+        //在售的套餐不能删除
+        ids.forEach(id -> {
+            Setmeal setmeal = setmealMapper.getById(id);
+            if (StatusConstant.ENABLE == setmeal.getStatus()) {
+                throw new SetmealEnableFailedException(MessageConstant.DISH_ON_SALE);
+            }
+        });
+        ids.forEach(id -> {
+            //删除菜品数据
+            setmealMapper.delete(id);
+
+            //删除套餐和菜品的关联数据
+            setmealDishMapper.deleteBySetmealId(id);
+
+        });
     }
 }

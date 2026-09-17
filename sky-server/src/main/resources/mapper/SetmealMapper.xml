@@ -86,4 +86,10 @@
         from setmeal
         where id = #{id}
     </select>
+
+    <!--    删除菜品数据-->
+    <delete id="delete">
+        delete from setmeal
+        where id = #{id}
+    </delete>
 </mapper>
