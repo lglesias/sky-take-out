@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
- * TODO：修改套餐  套餐起售、停售 批量删除套餐 新增套餐 根据id查询套餐
+ * TODO：修改套餐  套餐起售、停售 批量删除套餐 根据id查询套餐
  * ClassName: SetmealController
  * Package: com.sky.controller.admin
  * Description:
@@ -54,6 +56,20 @@ public class SetmealController {
     public Result save(@RequestBody SetmealDTO setmealDTO) {
         log.info("新增套餐: {}", setmealDTO);
         setmealService.save(setmealDTO);
+        return Result.success();
+    }
+
+    /**
+     * 修改套餐状态
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("修改套餐状态")
+    public Result updateStatus(@PathVariable Integer status, Long id) {
+        log.info("修改套餐状态: {} {}", status, id);
+        setmealService.updateStatus(status, id);
         return Result.success();
     }
 }

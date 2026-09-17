@@ -26,9 +26,16 @@ public interface DishService {
 
     /**
      * 分页查询菜品数据
-     * @param page
-     * @param pageSize
+     * @param dishPageQueryDTO
      * @return
      */
     PageResult page(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 起售或者停售菜品
+     * @param status
+     * @param id
+     */
+
+    void startOrStop(Integer status, Long id);
 }

@@ -40,4 +40,10 @@ public interface DishMapper {
      * @return
      */
     Page<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 根据id修改菜品
+     * @param dish
+     */
+    void update(Dish dish);
 }

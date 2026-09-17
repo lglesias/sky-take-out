@@ -28,4 +28,11 @@ public interface SetmealService {
      * @param setmealDTO
      */
     void save( SetmealDTO setmealDTO);
+
+    /**
+     * 修改套餐状态
+     * @param status
+     * @param id
+     */
+    void updateStatus(Integer status, Long id);
 }

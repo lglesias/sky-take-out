@@ -2,6 +2,8 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,6 +83,24 @@ public class SetmealServiceImpl implements SetmealService {
         });
         //保存套餐和菜品的关联数据
         setmealDishMapper.insertBatch(setmealDishes);
+
+    }
+
+    /**
+     * 修改套餐状态
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .updateTime(LocalDateTime.now())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+        setmealMapper.update(setmeal);
 
     }
 }

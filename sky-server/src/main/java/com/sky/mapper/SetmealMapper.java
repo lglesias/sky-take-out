@@ -5,6 +5,8 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * TODO：
  * ClassName: SetmealMapper
@@ -36,4 +38,11 @@ public interface SetmealMapper {
      * @param setmeal
      */
     void insert(Setmeal setmeal);
+
+    /**
+     * 修改套餐
+     * @param setmeal
+     */
+    void update(Setmeal setmeal);
+
 }
