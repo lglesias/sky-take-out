@@ -71,4 +71,23 @@
         </set>
         where id =#{id}
     </update>
+
+    <!-- 根据套餐id查询菜品    -->
+    <select id="getBySetmealId" resultType="com.sky.entity.Dish">
+        SELECT d.id,
+               d.name,
+               d.category_id,
+               d.price,
+               d.image,
+               d.description,
+               d.status,
+               d.create_time,
+               d.update_time,
+               d.create_user,
+               d.update_user
+        FROM dish d,
+             setmeal_dish sd
+        WHERE d.id = sd.dish_id
+          AND sd.setmeal_id = #{id}
+    </select>
 </mapper>

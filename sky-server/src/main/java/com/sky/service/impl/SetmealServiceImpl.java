@@ -7,8 +7,11 @@ import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.SetmealEnableFailedException;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -39,6 +42,9 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * 套餐分页查询
@@ -93,7 +99,19 @@ public class SetmealServiceImpl implements SetmealService {
      * @param id
      */
     @Override
+    @Transactional
     public void updateStatus(Integer status, Long id) {
+        if (status == StatusConstant.ENABLE) {
+            List<Dish> dishIds = dishMapper.getBySetmealId(id);
+            if (dishIds != null && dishIds.size() > 0) {
+                dishIds.forEach(dish -> {
+                    if (StatusConstant.DISABLE == dish.getStatus()) {
+                        throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    }
+                });
+            }
+        }
+
         Setmeal setmeal = Setmeal.builder()
                 .id(id)
                 .status(status)
@@ -101,6 +119,7 @@ public class SetmealServiceImpl implements SetmealService {
                 .updateUser(BaseContext.getCurrentId())
                 .build();
         setmealMapper.update(setmeal);
+
 
     }
 }
