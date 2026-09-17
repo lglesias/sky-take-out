@@ -6,13 +6,16 @@ import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
+import com.sky.entity.DishFlavor;
 import com.sky.entity.Setmeal;
+import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +42,8 @@ public class DishServiceImpl implements DishService {
     private SetmealDishMapper setmealDishMapper;
     @Autowired
     private SetmealMapper setmealMapper;
+    @Autowired
+    private DishFlavorMapper dishFlavorMapper;
 
     /**
      * 根据分类id查询菜品
@@ -101,6 +106,21 @@ public class DishServiceImpl implements DishService {
                 }
             }
         }
+    }
+
+    @Override
+    public  DishVO  getById(Long id) {
+        // 根据id查询菜品
+        Dish dish =  dishMapper.getById(id);
+        // 根据菜品id查询菜品口味
+        List<DishFlavor> flavors = dishFlavorMapper.getFlavorsById(id);
+
+        // 将查询到的菜品和菜品口味封装成DishVO对象
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(flavors);
+
+        return dishVO;
     }
 
 }
