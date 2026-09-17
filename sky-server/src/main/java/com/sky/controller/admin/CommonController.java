@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * TODO：
+ *
  * ClassName: CommonController
  * Package: com.sky.controller.admin
  * Description:
