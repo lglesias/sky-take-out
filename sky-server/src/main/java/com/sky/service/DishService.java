@@ -53,4 +53,10 @@ public interface DishService {
      * @param dishDTo
      */
     void saveWithFlavor(DishDTO dishDTo);
+
+    /**
+     * 修改菜品
+     * @param dishDTO
+     */
+    void updateWithFlavor(DishDTO dishDTO);
 }

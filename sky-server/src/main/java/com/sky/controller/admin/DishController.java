@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * TODO 修改菜品
  * TODO 批量删除菜品
- * TODO 新增菜品
  * ClassName: DishController
  * Package: com.sky.controller.admin
  * Description:
@@ -101,6 +100,18 @@ public class DishController {
     public Result save(@RequestBody DishDTO dishDTo){
         log.info("新增菜品: {}", dishDTo);
         dishService.saveWithFlavor(dishDTo);
+        return Result.success();
+    }
+    /**
+     * 修改菜品
+     * @param dishDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改菜品")
+    public Result update(@RequestBody DishDTO dishDTO){
+        log.info("修改菜品: {}", dishDTO);
+        dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
 }
