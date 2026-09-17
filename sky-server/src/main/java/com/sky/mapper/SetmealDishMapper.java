@@ -28,11 +28,18 @@ public interface SetmealDishMapper {
      * @param ids
      * @return
      */
-    List<Long> getSetmealByDishIds(List<Long> ids);
+    List<Long> getSetmealIdsByDishIds(List<Long> ids);
 
     /**
      * 删除套餐和菜品的关联数据
      * @param id
      */
     void deleteBySetmealId(Long id);
+
+    /**
+     * 根据菜品id查询套餐
+     * @param id
+     * @return
+     */
+    List<SetmealDish> getBySetmealId(Long id);
 }

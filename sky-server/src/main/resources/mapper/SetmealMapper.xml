@@ -74,6 +74,7 @@
     <!--    根据id查询套餐-->
     <select id="getById" resultType="com.sky.entity.Setmeal">
         select id,
+               category_id,
         name,
         price,
         status,

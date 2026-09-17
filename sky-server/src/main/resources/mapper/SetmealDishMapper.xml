@@ -11,7 +11,7 @@
     </insert>
 
     <!--   判断当前菜品是否被套餐关联了-->
-    <select id="getSetmealByDishIds" resultType="java.lang.Long">
+    <select id="getSetmealIdsByDishIds" resultType="java.lang.Long">
         select setmeal_id
         from setmeal_dish
         where dish_id in
@@ -20,7 +20,17 @@
         </foreach>
     </select>
 
+    <!--    删除套餐餐品关系表中的数据-->
     <delete id="deleteBySetmealId">
-        delete from setmeal_dish where setmeal_id = #{id}
+        delete
+        from setmeal_dish
+        where setmeal_id = #{id}
     </delete>
+
+    <!--  根据套餐信息查询菜品信息  -->
+    <select id="getBySetmealId" resultType="com.sky.entity.SetmealDish">
+        select id, setmeal_id, dish_id, name, price, copies
+        from setmeal_dish
+        where setmeal_id = #{id}
+    </select>
 </mapper>

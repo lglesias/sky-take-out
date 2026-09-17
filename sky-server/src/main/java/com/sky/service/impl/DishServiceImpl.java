@@ -98,7 +98,7 @@ public class DishServiceImpl implements DishService {
             // 如果是停售操作，还需要将包含当前菜品的套餐也停售
             List<Long> dishIds = new ArrayList<>();
             dishIds.add(id);
-            List<Long> setmeals = setmealDishMapper.getSetmealByDishIds(dishIds);
+            List<Long> setmeals = setmealDishMapper.getSetmealIdsByDishIds(dishIds);
             if (setmeals != null && setmeals.size() > 0){
                 for (Long setmealid : setmeals) {
                     Setmeal setmeal = Setmeal.builder()
@@ -113,6 +113,11 @@ public class DishServiceImpl implements DishService {
         }
     }
 
+    /**
+     * 根据id查询菜品
+     * @param id
+     * @return
+     */
     @Override
     public  DishVO  getById(Long id) {
         // 根据id查询菜品
@@ -192,7 +197,7 @@ public class DishServiceImpl implements DishService {
             }
         });
         //被套餐关联的不能删除
-        List<Long> setmealByDishIds = setmealDishMapper.getSetmealByDishIds(ids);
+        List<Long> setmealByDishIds = setmealDishMapper.getSetmealIdsByDishIds(ids);
         if (setmealByDishIds != null && setmealByDishIds.size() > 0){
             throw new SetmealEnableFailedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
