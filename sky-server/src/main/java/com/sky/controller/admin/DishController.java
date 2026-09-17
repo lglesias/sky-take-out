@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * TODO 批量删除菜品
  * ClassName: DishController
  * Package: com.sky.controller.admin
  * Description:
@@ -111,6 +110,19 @@ public class DishController {
     public Result update(@RequestBody DishDTO dishDTO){
         log.info("修改菜品: {}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
+        return Result.success();
+    }
+
+    /**
+     * 批量删除菜品
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("批量删除菜品")
+    public Result delete(@RequestParam List<Long> ids){
+        log.info("删除菜品: {}", ids);
+        dishService.delete(ids);
         return Result.success();
     }
 }

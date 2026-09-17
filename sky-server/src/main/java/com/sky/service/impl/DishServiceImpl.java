@@ -1,14 +1,18 @@
 package com.sky.service.impl;
 
+import com.fasterxml.jackson.databind.Module;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
+import com.sky.controller.admin.SetmealController;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import com.sky.entity.Setmeal;
+import com.sky.exception.SetmealEnableFailedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
@@ -171,6 +175,35 @@ public class DishServiceImpl implements DishService {
             flavors.forEach(flavor -> flavor.setDishId(dishDTO.getId()));
             dishFlavorMapper.insertBatch(flavors);
         }
+    }
+
+    /**
+     * 删除菜品
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+        //在售情况下不能删除
+        ids.forEach(id ->{
+            Dish dish = dishMapper.getById(id);
+            if (dish.getStatus() == StatusConstant.ENABLE){
+                throw new SetmealEnableFailedException(MessageConstant.DISH_ON_SALE);
+            }
+        });
+        //被套餐关联的不能删除
+        List<Long> setmealByDishIds = setmealDishMapper.getSetmealByDishIds(ids);
+        if (setmealByDishIds != null && setmealByDishIds.size() > 0){
+            throw new SetmealEnableFailedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+        //删除菜品
+        ids.forEach(id ->{
+            dishMapper.delete(id);
+
+            //删除菜品口味
+            dishFlavorMapper.deleteByDishIds(id);
+        });
+
     }
 
 }
