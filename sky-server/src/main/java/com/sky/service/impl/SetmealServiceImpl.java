@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO：
+ *
  * ClassName: SetmealServiceImpl
  * Package: com.sky.service.impl
  * Description:
@@ -119,7 +119,16 @@ public class SetmealServiceImpl implements SetmealService {
                 .updateUser(BaseContext.getCurrentId())
                 .build();
         setmealMapper.update(setmeal);
+    }
 
+    /**
+     * 根据id查询套餐
+     * @param id
+     * @return
+     */
+    @Override
+    public Setmeal getById(Long id) {
+        return setmealMapper.getById(id);
 
     }
 }

@@ -6,7 +6,7 @@ import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 
 /**
- * TODO：
+ *
  * ClassName: SetmealService
  * Package: com.sky.service
  * Description:
@@ -35,4 +35,11 @@ public interface SetmealService {
      * @param id
      */
     void updateStatus(Integer status, Long id);
+
+    /**
+     * 根据id查询套餐
+     * @param id
+     * @return
+     */
+    Setmeal getById(Long id);
 }

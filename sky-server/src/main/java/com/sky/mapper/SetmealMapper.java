@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * TODO：
+ *
  * ClassName: SetmealMapper
  * Package: com.sky.mapper
  * Description:
@@ -45,4 +45,10 @@ public interface SetmealMapper {
      */
     void update(Setmeal setmeal);
 
+    /**
+     * 根据id查询套餐
+     * @param id
+     * @return
+     */
+    Setmeal getById(Long id);
 }

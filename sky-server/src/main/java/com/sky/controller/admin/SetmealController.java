@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * TODO：修改套餐  套餐起售、停售 批量删除套餐 根据id查询套餐
+ * TODO：修改套餐   批量删除套餐 根据id查询套餐
  * ClassName: SetmealController
  * Package: com.sky.controller.admin
  * Description:
@@ -71,5 +71,18 @@ public class SetmealController {
         log.info("修改套餐状态: {} {}", status, id);
         setmealService.updateStatus(status, id);
         return Result.success();
+    }
+
+    /**
+     * 根据id查询套餐
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询套餐")
+    public Result<Setmeal> getById(@PathVariable Long id) {
+        log.info("根据id查询套餐: {}", id);
+        Setmeal setmeal = setmealService.getById(id);
+        return Result.success(setmeal);
     }
 }
