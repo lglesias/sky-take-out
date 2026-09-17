@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * TODO 修改菜品
  * TODO 批量删除菜品
  * ClassName: DishController
  * Package: com.sky.controller.admin
