@@ -62,4 +62,9 @@ public interface DishMapper {
      */
     Dish getById(Long id);
 
+    /**
+     * 新增菜品
+     * @param dish
+     */
+    void insert(Dish dish);
 }

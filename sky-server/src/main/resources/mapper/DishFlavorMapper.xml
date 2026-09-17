@@ -12,4 +12,12 @@
         FROM dish_flavor
         WHERE dish_id = #{id}
     </select>
+
+    <insert id="insertBatch">
+        INSERT INTO dish_flavor (dish_id, name, value)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.dishId}, #{item.name}, #{item.value})
+        </foreach>
+    </insert>
 </mapper>

@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
@@ -121,6 +122,32 @@ public class DishServiceImpl implements DishService {
         dishVO.setFlavors(flavors);
 
         return dishVO;
+    }
+
+    /**
+     * 新增菜品
+     * @param dishDTo
+     */
+    @Override
+    @Transactional
+    public void saveWithFlavor(DishDTO dishDTo) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTo, dish);
+        // 设置当前菜品的创建和更新时间为当前时间
+        dish.setCreateTime(LocalDateTime.now());
+        dish.setUpdateTime(LocalDateTime.now());
+        dishMapper.insert(dish);
+        // 获取新增菜品的id
+        Long dishId = dish.getId();
+        List<DishFlavor> flavors = dishDTo.getFlavors();
+        // 如果 flavors 不为空，则批量插入菜品口味数据
+        if (flavors != null && flavors.size() > 0){
+            for (DishFlavor flavor : flavors) {
+                flavor.setDishId(dishId);
+            }
+            // 批量插入菜品口味数据
+            dishFlavorMapper.insertBatch(flavors);
+        }
     }
 
 }

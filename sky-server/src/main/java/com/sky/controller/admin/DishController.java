@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.alibaba.druid.sql.PagerUtils;
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.result.PageResult;
@@ -88,5 +89,18 @@ public class DishController {
         log.info("根据id查询菜品: {}", id);
         DishVO dishVO = dishService.getById(id);
         return Result.success(dishVO);
+    }
+
+    /**
+     * 新增菜品
+     * @param dishDTo
+     * @return
+     */
+    @PostMapping
+    @ApiOperation("新增菜品")
+    public Result save(@RequestBody DishDTO dishDTo){
+        log.info("新增菜品: {}", dishDTo);
+        dishService.saveWithFlavor(dishDTo);
+        return Result.success();
     }
 }
