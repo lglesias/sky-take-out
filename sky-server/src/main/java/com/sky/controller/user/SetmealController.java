@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * TODO：
+ *
  * ClassName: SetmealController
  * Package: com.sky.controller.user
  * Description:
@@ -53,7 +53,8 @@ public class SetmealController {
     }
 
     /**
-     * 根据ID查询套餐详情
+     *
+     *
      * @param id
      * @return
      */

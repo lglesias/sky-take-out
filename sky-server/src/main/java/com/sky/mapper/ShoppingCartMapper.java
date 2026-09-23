@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * TODO：
+ *
  * ClassName: ShoppingCartMapper
  * Package: com.sky.mapper
  * Description:
