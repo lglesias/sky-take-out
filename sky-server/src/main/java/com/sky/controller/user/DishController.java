@@ -42,6 +42,7 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("条件查询菜品和口味")
     public Result<List<DishVO>> list(Long categoryId){
+        log.info("根据分类查询菜品列表，分类ID：{}", categoryId);
         Dish dish = new Dish();
         dish.setCategoryId(categoryId);
         dish.setStatus(StatusConstant.ENABLE);
