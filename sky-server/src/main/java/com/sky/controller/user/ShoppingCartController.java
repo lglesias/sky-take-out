@@ -55,4 +55,15 @@ public class ShoppingCartController {
         shoppingCartService.add(shoppingCartDTO);
         return Result.success();
     }
+
+    /**
+     * 清空购物车
+     * @return
+     */
+    @DeleteMapping("/clean")
+    @ApiOperation("清空购物车")
+    public Result clean() {
+        shoppingCartService.cleanShoppingCart();
+        return Result.success();
+    }
 }

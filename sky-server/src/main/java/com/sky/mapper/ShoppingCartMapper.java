@@ -34,4 +34,10 @@ public interface ShoppingCartMapper {
      * @param shoppingCart
      */
     void updateNumberById(ShoppingCart shoppingCart);
+
+    /**
+     * 清空购物车
+     * @param currentId
+     */
+    void cleanShoppingCart(Long currentId);
 }

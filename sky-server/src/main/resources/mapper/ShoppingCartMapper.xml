@@ -43,4 +43,10 @@
             amount = #{amount}
         where id = #{id}
     </update>
+
+    <delete id="cleanShoppingCart">
+        delete
+        from shopping_cart
+        where user_id = #{currentId}
+    </delete>
 </mapper>
