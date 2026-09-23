@@ -62,7 +62,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setUserId(BaseContext.getCurrentId());
         //判断当前菜品是否在购物车内
         List<ShoppingCart> shoppingCartList = shoppingCartMapper.list(shoppingCart);
-        if (shoppingCartList != null && shoppingCartList.size() > 0){
+        if (shoppingCartList != null && shoppingCartList.size() > 0) {
             //购物车中已存在该菜品，数量加一
             shoppingCart = shoppingCartList.get(0);
             shoppingCart.setNumber(shoppingCart.getNumber() + 1);
@@ -70,13 +70,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } else {
             //购物车中不存在该菜品，新增
             Long dishId = shoppingCartDTO.getDishId();
-            if (dishId != null){
+            if (dishId != null) {
                 //新增菜品
                 Dish dish = dishMapper.getById(dishId);
                 shoppingCart.setName(dish.getName());
                 shoppingCart.setImage(dish.getImage());
                 shoppingCart.setAmount(dish.getPrice());
-            }else{
+            } else {
                 //新增套餐
                 Setmeal setmeal = setmealMapper.getById(shoppingCart.getSetmealId());
                 shoppingCart.setName(setmeal.getName());
@@ -97,5 +97,36 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Long currentId = BaseContext.getCurrentId();
         shoppingCartMapper.cleanShoppingCart(currentId);
 
+    }
+
+    /**
+     * 减少购物车中商品数量
+     *
+     * @param shoppingCartDTO
+     */
+    @Override
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+
+        //只能查看自己购物车的内容
+        shoppingCart.setUserId(BaseContext.getCurrentId());
+
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        if (list != null && list.size() > 0){
+            shoppingCart = list.get(0);
+            Integer number = shoppingCart.getNumber();
+            if (number == 1){
+                //如果为1 直接删除
+                shoppingCartMapper.deleteById(shoppingCart.getId());
+            }else {
+                //如果不为1 则-1 并更新
+                shoppingCart.setNumber(shoppingCart.getNumber() -1 );
+                shoppingCartMapper.updateNumberById(shoppingCart);
+            }
+
+
+
+        }
     }
 }
