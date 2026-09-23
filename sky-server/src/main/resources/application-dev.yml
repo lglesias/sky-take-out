@@ -11,3 +11,6 @@ sky:
     port: 6379
     password: 130926liangZC@@.
     database: 0
+  wechat:
+    secret: 53da373379deecc9a55d555c22796a59
+    appid: wxc70ccb171c5e5629
