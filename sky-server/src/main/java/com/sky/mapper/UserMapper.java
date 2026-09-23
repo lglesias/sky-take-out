@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * TODO：
+ *
  * ClassName: UserMapper
  * Package: com.sky.mapper
  * Description:
