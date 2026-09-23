@@ -56,7 +56,6 @@ public class CategoryController {
      */
     @PutMapping
     @ApiOperation("修改分类")
-    @CacheEvict(value = "categoryCache", allEntries = true)
     public Result<String> updateCategory(@RequestBody CategoryDTO categoryDTO) {
         log.info("修改分类: {}", categoryDTO);
         categoryService.updateCategory(categoryDTO);
@@ -71,7 +70,6 @@ public class CategoryController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用分类")
-    @CacheEvict(value = "categoryCache", allEntries = true)
     public Result startOrStop(@PathVariable Integer status, Long id) {
         log.info("修改分类状态: {}", status);
         categoryService.startOrStop(status, id);
@@ -85,7 +83,6 @@ public class CategoryController {
      */
     @PostMapping
     @ApiOperation("新增分类")
-    @CacheEvict(value = "categoryCache", allEntries = true)
     public Result<String> save(@RequestBody CategoryDTO categoryDTO) {
         log.info("新增分类: {}", categoryDTO);
         categoryService.save(categoryDTO);
@@ -99,7 +96,6 @@ public class CategoryController {
      */
     @DeleteMapping
     @ApiOperation("删除分类")
-    @CacheEvict(value = "categoryCache", allEntries = true)
     public Result<String> deleteById(Long id){
         log.info("删除分类: {}", id);
         categoryService.deleteById(id);
