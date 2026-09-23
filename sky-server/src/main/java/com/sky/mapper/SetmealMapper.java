@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
+import com.sky.vo.DishItemVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -57,4 +58,18 @@ public interface SetmealMapper {
      * @param id
      */
     void delete(Long id);
+
+    /**
+     * 根据条件查询套餐
+     * @param setmeal
+     * @return
+     */
+    List<Setmeal> list(Setmeal setmeal);
+
+    /**
+     * 根据id查询菜品选项
+     * @param id
+     * @return
+     */
+    List<DishItemVO> getDishItemBySetmealId(Long id);
 }
