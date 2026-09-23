@@ -26,7 +26,7 @@ import java.util.UUID;
  * @Create 2026/9/16 14:22
  * @Version 1.0
  */
-@RestController
+@RestController("adminCommonController")
 @RequestMapping("/admin/common")
 @Api(tags = "通用接口")
 @Slf4j
