@@ -12,6 +12,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,11 +75,12 @@ public class DishController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("菜品起售停售")
+    @CacheEvict(value = "dishCache", allEntries = true)
     public Result startOrStop(@PathVariable Integer status, Long id) {
         log.info("开始或停止菜品：{}", status, id);
         dishService.startOrStop(status, id);
         //删除以dish_ 开头的缓存
-        cleanCache("dish_*");
+        //cleanCache("dish_*");
         return Result.success();
     }
 
@@ -103,12 +106,13 @@ public class DishController {
      */
     @PostMapping
     @ApiOperation("新增菜品")
+    @CachePut(value = "dishCache", key = "#dishDTo.id")
     public Result save(@RequestBody DishDTO dishDTo) {
         log.info("新增菜品: {}", dishDTo);
         dishService.saveWithFlavor(dishDTo);
         //清理缓存
-        String key = "dish_" + dishDTo.getCategoryId();
-        cleanCache(key);
+        //String key = "dish_" + dishDTo.getCategoryId();
+        //cleanCache(key);
         return Result.success();
     }
 
@@ -120,11 +124,12 @@ public class DishController {
      */
     @PutMapping
     @ApiOperation("修改菜品")
+    @CacheEvict(value = "dishCache", allEntries = true)
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品: {}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
         //删除以dish_ 开头的缓存
-        cleanCache("dish_*");
+        //cleanCache("dish_*");
         return Result.success();
     }
 
@@ -136,11 +141,12 @@ public class DishController {
      */
     @DeleteMapping
     @ApiOperation("批量删除菜品")
+    @CacheEvict(value = "dishCache", allEntries = true)
     public Result delete(@RequestParam List<Long> ids) {
         log.info("删除菜品: {}", ids);
         dishService.delete(ids);
         //删除以dish_ 开头的缓存
-        cleanCache("dish_*");
+        //cleanCache("dish_*");
         return Result.success();
     }
 
@@ -149,8 +155,8 @@ public class DishController {
      *
      * @param pattern
      */
-    private void cleanCache(String pattern) {
-        Set keys = redisTemplate.keys(pattern);
-        redisTemplate.delete(keys);
-    }
+//    private void cleanCache(String pattern) {
+//        Set keys = redisTemplate.keys(pattern);
+//        redisTemplate.delete(keys);
+//    }
 }
