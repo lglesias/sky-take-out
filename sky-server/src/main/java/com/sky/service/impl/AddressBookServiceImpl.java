@@ -75,4 +75,14 @@ public class AddressBookServiceImpl implements AddressBookService {
     public AddressBook getById(Long id) {
         return addressBookMapper.getById(id);
     }
+
+    /**
+     * 根据id修改地址
+     * @param addressBook
+     */
+    @Override
+    public void update(AddressBook addressBook) {
+        addressBook.setUserId(BaseContext.getCurrentId());
+        addressBookMapper.update(addressBook);
+    }
 }

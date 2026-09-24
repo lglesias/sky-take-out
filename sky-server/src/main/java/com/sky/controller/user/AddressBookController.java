@@ -101,8 +101,22 @@ public class AddressBookController {
     @GetMapping("/{id}")
     @ApiOperation("根据id查询地址")
     public Result<AddressBook> getById(@PathVariable Long id){
+        log.info("根据id查询地址 {}", id);
         AddressBook addressBook = addressBookService.getById(id);
         return Result.success(addressBook);
+    }
+
+    /**
+     * 根据id修改地址
+     * @param addressBook
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改地址")
+    public Result update(@RequestBody AddressBook addressBook){
+        log.info("修改地址 {}", addressBook);
+        addressBookService.update(addressBook);
+        return Result.success();
     }
 
 
