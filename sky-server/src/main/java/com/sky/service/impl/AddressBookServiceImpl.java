@@ -85,4 +85,13 @@ public class AddressBookServiceImpl implements AddressBookService {
         addressBook.setUserId(BaseContext.getCurrentId());
         addressBookMapper.update(addressBook);
     }
+
+    /**
+     * 根据id删除地址
+     * @param id
+     */
+    @Override
+    public void deleteById(Long id) {
+        addressBookMapper.deleteById(id);
+    }
 }

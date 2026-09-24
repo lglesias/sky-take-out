@@ -50,4 +50,10 @@ public interface AddressBookMapper {
      * @return
      */
     AddressBook getById(Long id);
+
+    /**
+     * 根据id删除地址
+     * @param id
+     */
+    void deleteById(Long id);
 }

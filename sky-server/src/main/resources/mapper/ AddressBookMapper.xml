@@ -88,4 +88,8 @@
         from address_book
         where id = #{id}
     </select>
+
+    <delete id="deleteById">
+        delete from address_book where id = #{id}
+    </delete>
 </mapper>

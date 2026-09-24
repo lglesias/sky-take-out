@@ -119,5 +119,18 @@ public class AddressBookController {
         return Result.success();
     }
 
+    /**
+     * 根据id删除地址
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("删除地址")
+    public Result delete(@RequestParam Long id){
+        log.info("根据id删除地址 {}", id);
+        addressBookService.deleteById(id);
+        return Result.success();
+    }
+
 
 }
