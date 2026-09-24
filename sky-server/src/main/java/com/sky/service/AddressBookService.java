@@ -27,4 +27,10 @@ public interface AddressBookService {
      * @param addressBook
      */
     void save(AddressBook addressBook);
+
+    /**
+     * setDefault
+     * @param addressBook
+     */
+    void setDefault(AddressBook addressBook);
 }
