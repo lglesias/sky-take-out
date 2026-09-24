@@ -43,4 +43,11 @@ public interface AddressBookMapper {
      * @param addressBook
      */
     void update(AddressBook addressBook);
+
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
+    AddressBook getById(Long id);
 }
