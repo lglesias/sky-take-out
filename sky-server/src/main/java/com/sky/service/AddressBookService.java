@@ -21,4 +21,10 @@ public interface AddressBookService {
      * @return
      */
     List<AddressBook> list(AddressBook addressBook);
+
+    /**
+     * 保存地址信息
+     * @param addressBook
+     */
+    void save(AddressBook addressBook);
 }

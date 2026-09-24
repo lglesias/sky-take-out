@@ -9,9 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.Address;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,6 +46,35 @@ public class AddressBookController {
         addressBook.setUserId(BaseContext.getCurrentId());
         List<AddressBook> list = addressBookService.list(addressBook);
         return Result.success(list);
+    }
+
+    /**
+     * 保存用户地址信息
+     * @param addressBook
+     * @return
+     */
+    @PostMapping
+    @ApiOperation("保存用户地址信息")
+    public Result save(@RequestBody AddressBook addressBook){
+        addressBookService.save(addressBook);
+        return Result.success();
+    }
+
+    /**
+     * 查询默认地址
+     * @return
+     */
+    @GetMapping("/default")
+    @ApiOperation("查询默认地址")
+    public Result<AddressBook> getDefault(){
+        AddressBook addressBook = new AddressBook();
+        addressBook.setUserId(BaseContext.getCurrentId());
+        addressBook.setIsDefault(1);
+        List<AddressBook> list = addressBookService.list(addressBook);
+        if (list != null && list.size() == 1){
+            return Result.success(list.get(0));
+        }
+        return Result.error("没有找到默认地址");
     }
 
 
