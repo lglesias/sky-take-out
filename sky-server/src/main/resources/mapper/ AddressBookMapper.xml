@@ -7,13 +7,13 @@
         select * from address_book
         <where>
             <if test="userId != null">
-                user_id = #{userId}
+                and user_id = #{userId}
             </if>
             <if test="phone != null">
-                phone = #{phone}
+                and phone = #{phone}
             </if>
             <if test="isDefault != null">
-                is_default = #{isDefault}
+                and is_default = #{isDefault}
             </if>
         </where>
     </select>
