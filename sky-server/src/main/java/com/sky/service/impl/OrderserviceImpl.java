@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * TODO：
@@ -273,6 +274,29 @@ public class OrderserviceImpl implements Orderservice {
         orders.setCancelTime(LocalDateTime.now());
         orderMapper.update(orders);
 
+    }
+
+    /**
+     * 再来一单
+     * @param id
+     */
+    @Override
+    public void repetition(Long id) {
+        //查询当前用户id
+        Long currentId = BaseContext.getCurrentId();
+        //根据订单id查询订单详情
+        List<OrderDetail> byOrdersId = orderDetailMapper.getByOrdersId(id);
+        //将订单详情转换为购物车详情
+        List<ShoppingCart> shoppingCarts = byOrdersId.stream().map((item) -> {
+            ShoppingCart shoppingCart = new ShoppingCart();
+                    //将原订单的餐品信息拷贝到购物车中
+            BeanUtils.copyProperties(item, shoppingCart,"id");
+            shoppingCart.setUserId(currentId);
+            shoppingCart.setCreateTime(LocalDateTime.now());
+            return shoppingCart;
+        }).collect(Collectors.toList());
+        // 将购物车对象批量添加到数据库
+        shoppingCartMapper.insertBatch(shoppingCarts);
     }
 
 
