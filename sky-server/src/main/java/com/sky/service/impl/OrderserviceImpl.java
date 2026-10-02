@@ -230,5 +230,50 @@ public class OrderserviceImpl implements Orderservice {
         return orderVO;
     }
 
+    /**
+     * 取消订单
+     * - 待支付和待接单状态下，用户可直接取消订单
+     * - 商家已接单状态下，用户取消订单需电话沟通商家
+     * - 派送中状态下，用户取消订单需电话沟通商家
+     * - 如果在待接单状态下取消订单，需要给用户退款
+     * - 取消订单后需要将订单状态修改为“已取消”
+     * - 订单状态 1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
+     * @param id
+     */
+    @Override
+    public void cancel(Long id) throws Exception {
+        //根据id查询订单
+        Orders orderDB = orderMapper.getById(id);
+        //判断订单是否存在
+        if (orderDB == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        Orders orders = new Orders();
+        orders.setId(id);
+        //判断订单状态
+        if (orderDB.getStatus() == Orders.CONFIRMED || orderDB.getStatus() == Orders.DELIVERY_IN_PROGRESS){
+            //电话沟通商家
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+            //如果在待接单状态下取消订单，需要给用户退款
+        } else if (orderDB.getStatus() == Orders.TO_BE_CONFIRMED){
+
+//            weChatPayUtil.refund(
+//                    orderDB.getNumber(), //商户订单号
+//                    orderDB.getNumber(), //商户退款单号
+//                    new BigDecimal(0.01),//退款金额，单位 元
+//                    new BigDecimal(0.01));//原订单金额
+
+            //支付状态修改为 退款
+            orders.setPayStatus(Orders.REFUND);
+        }
+        //待支付和待接单状态下，用户可直接取消订单
+        //取消订单后需要将订单状态修改为“已取消”
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelReason("用户取消订单");
+        orders.setCancelTime(LocalDateTime.now());
+        orderMapper.update(orders);
+
+    }
+
 
 }
