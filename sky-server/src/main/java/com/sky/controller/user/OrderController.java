@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * TODO：-   再来一单
+ *
  * ClassName: OrderController
  * Package: com.sky.controller.user
  * Description:
@@ -114,6 +114,18 @@ public class OrderController {
     @ApiOperation("再来一单")
     public Result repetition(@PathVariable Long id) {
         orderservice.repetition(id);
+        return Result.success();
+    }
+
+    /**
+     * 催单
+     * @param id
+     * @return
+     */
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("催单")
+    public Result reminder(@PathVariable Long id) {
+        orderservice.reminder(id);
         return Result.success();
     }
 }

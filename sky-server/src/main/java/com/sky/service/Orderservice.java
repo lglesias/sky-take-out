@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
@@ -8,7 +9,7 @@ import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 
 /**
- * TODO：
+ *
  * ClassName: Orderservice
  * Package: com.sky.service
  * Description:
@@ -65,4 +66,17 @@ public interface Orderservice {
      * @param id
      */
     void repetition(Long id);
+
+    /**
+     * 催单
+     * @param id
+     */
+    void reminder(Long id);
+
+    /**
+     * 订单搜索
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
 }

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * TODO：
+ *
  * ClassName: OrderserviceImpl
  * Package: com.sky.service.impl
  * Description:
@@ -118,6 +119,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 订单支付
+     *
      * @param ordersPaymentDTO
      * @return
      * @throws Exception
@@ -141,7 +143,7 @@ public class OrderserviceImpl implements Orderservice {
 //        }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code","ORDERPAID");
+        jsonObject.put("code", "ORDERPAID");
         OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
         vo.setPackageStr(jsonObject.getString("package"));
         Integer OrderPaidStatus = Orders.PAID;//支付状态，已支付
@@ -153,6 +155,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 订单支付成功，修改订单状态
+     *
      * @param outTradeNo
      */
     @Override
@@ -174,6 +177,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 用户分页查询订单
+     *
      * @param page
      * @param pageSize
      * @param status
@@ -194,10 +198,10 @@ public class OrderserviceImpl implements Orderservice {
 
         //执行分页查询
         Page<Orders> pageResult = orderMapper.pageQuery(ordersPageQueryDTO);
-        List<OrderVO> list =new ArrayList<>();
+        List<OrderVO> list = new ArrayList<>();
 
         //查询订单明细 并封装入OrderVO进行响应
-        if(pageResult != null && pageResult.getTotal() > 0){
+        if (pageResult != null && pageResult.getTotal() > 0) {
             for (Orders orders : pageResult) {
                 Long orderId = orders.getId();
                 List<OrderDetail> orderDetails = orderDetailMapper.getByOrdersId(orderId);
@@ -213,6 +217,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 查询订单详情
+     *
      * @param id
      * @return
      */
@@ -239,6 +244,7 @@ public class OrderserviceImpl implements Orderservice {
      * - 如果在待接单状态下取消订单，需要给用户退款
      * - 取消订单后需要将订单状态修改为“已取消”
      * - 订单状态 1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
+     *
      * @param id
      */
     @Override
@@ -246,17 +252,17 @@ public class OrderserviceImpl implements Orderservice {
         //根据id查询订单
         Orders orderDB = orderMapper.getById(id);
         //判断订单是否存在
-        if (orderDB == null){
+        if (orderDB == null) {
             throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
         }
         Orders orders = new Orders();
         orders.setId(id);
         //判断订单状态
-        if (orderDB.getStatus() == Orders.CONFIRMED || orderDB.getStatus() == Orders.DELIVERY_IN_PROGRESS){
+        if (orderDB.getStatus() == Orders.CONFIRMED || orderDB.getStatus() == Orders.DELIVERY_IN_PROGRESS) {
             //电话沟通商家
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
             //如果在待接单状态下取消订单，需要给用户退款
-        } else if (orderDB.getStatus() == Orders.TO_BE_CONFIRMED){
+        } else if (orderDB.getStatus() == Orders.TO_BE_CONFIRMED) {
 
 //            weChatPayUtil.refund(
 //                    orderDB.getNumber(), //商户订单号
@@ -278,6 +284,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 再来一单
+     *
      * @param id
      */
     @Override
@@ -289,14 +296,82 @@ public class OrderserviceImpl implements Orderservice {
         //将订单详情转换为购物车详情
         List<ShoppingCart> shoppingCarts = byOrdersId.stream().map((item) -> {
             ShoppingCart shoppingCart = new ShoppingCart();
-                    //将原订单的餐品信息拷贝到购物车中
-            BeanUtils.copyProperties(item, shoppingCart,"id");
+            //将原订单的餐品信息拷贝到购物车中
+            BeanUtils.copyProperties(item, shoppingCart, "id");
             shoppingCart.setUserId(currentId);
             shoppingCart.setCreateTime(LocalDateTime.now());
             return shoppingCart;
         }).collect(Collectors.toList());
         // 将购物车对象批量添加到数据库
         shoppingCartMapper.insertBatch(shoppingCarts);
+    }
+
+    /**
+     * 催单
+     * TODO
+     *
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+
+
+    }
+
+    /**
+     * 条件查询
+     *
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO) {
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        Page<Orders> page = orderMapper.pageQuery(ordersPageQueryDTO);
+
+        List<OrderVO> orderVOList = getOrderVOList(page);
+        return new PageResult(page.getTotal(), orderVOList);
+    }
+
+    /**
+     * 需要返回订单菜品信息，自定义OrderVO响应结果
+     *
+     * @param page
+     * @return
+     */
+    private List<OrderVO> getOrderVOList(Page<Orders> page) {
+        List<OrderVO> orderVOList = new ArrayList<>();
+        List<Orders> result = page.getResult();
+        if (!CollectionUtils.isEmpty(result)) {
+            for (Orders orders : result) {
+                // 将共同字段复制到OrderVO
+                OrderVO orderVO = new OrderVO();
+                BeanUtils.copyProperties(orders, orderVO);
+                String orderDishes = getOrderDishesStr(orders);
+
+                // 将订单菜品信息封装到orderVO中，并添加到orderVOList
+                orderVO.setOrderDishes(orderDishes);
+                orderVOList.add(orderVO);
+            }
+        }
+        return orderVOList;
+    }
+
+    /**
+     * 根据订单id获取菜品信息字符串
+     *
+     * @param orders
+     * @return
+     */
+    private String getOrderDishesStr(Orders orders) {
+        //查询订单菜品详细信息
+        List<OrderDetail> orderDetails = orderDetailMapper.getByOrdersId(orders.getId());
+        // 将每一条订单菜品信息拼接为字符串（格式：宫保鸡丁*3；）
+        List<String> orderDishList = orderDetails.stream().map(x -> {
+            String orderDish = x.getName() + "*" + x.getNumber() + ";";
+            return orderDish;
+        }).collect(Collectors.toList());
+        return String.join("", orderDishList);
     }
 
 
