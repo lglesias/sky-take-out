@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * TODO：
@@ -45,6 +46,7 @@ public interface OrderMapper {
 
     /**
      * 更新订单状态
+     *
      * @param orderStatus
      * @param orderPaidStatus
      * @param check_out_time
@@ -54,7 +56,8 @@ public interface OrderMapper {
     void updateStatus(Integer orderStatus, Integer orderPaidStatus, LocalDateTime check_out_time, Long id);
 
     /**
-     *  分页条件查询并按下单时间排序
+     * 分页条件查询并按下单时间排序
+     *
      * @param ordersPageQueryDTO
      * @return
      */
@@ -62,6 +65,7 @@ public interface OrderMapper {
 
     /**
      * 根据id查询订单
+     *
      * @param id
      * @return
      */
@@ -70,9 +74,20 @@ public interface OrderMapper {
 
     /**
      * 根据状态查询订单
-      * @param status
+     *
+     * @param status
      * @return
      */
     @Select("select count(*) from orders where status = #{status}")
     Integer getByStatus(Integer status);
+
+    /**
+     * 根据状态和订单时间查询订单
+     *
+     * @param status
+     * @param orderTime
+     * @return
+     */
+    @Select("select * from orders where status = #{status} and order_time <(#{orderTime})")
+    List<Orders> getByStatusAndOrdersTimeLT(Integer status, LocalDateTime orderTime);
 }
