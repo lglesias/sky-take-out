@@ -18,6 +18,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -28,7 +29,9 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +59,8 @@ public class OrderserviceImpl implements Orderservice {
     @Autowired
     private UserMapper userMapper;
     private Orders orders;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     /**
      * 用户下单
@@ -172,6 +177,13 @@ public class OrderserviceImpl implements Orderservice {
 
         orderMapper.update(orders);
 
+        //向指定的用户发送消息
+        Map map = new HashMap();
+        map.put("type", 1);
+        map.put("orderId", ordersDB.getId());
+        map.put("content", outTradeNo);
+        String jsonString = JSONObject.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
     }
 
     /**
@@ -428,6 +440,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 派送订单
+     *
      * @param id
      */
     @Override
@@ -436,7 +449,7 @@ public class OrderserviceImpl implements Orderservice {
         Orders ordersDB = orderMapper.getById(id);
 
         //订单存在且状态为3（待派送）才可以派送
-        if (ordersDB == null || !ordersDB.getStatus().equals(Orders.CONFIRMED)){
+        if (ordersDB == null || !ordersDB.getStatus().equals(Orders.CONFIRMED)) {
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
         Orders orders = Orders.builder()
@@ -449,6 +462,7 @@ public class OrderserviceImpl implements Orderservice {
 
     /**
      * 完成订单
+     *
      * @param id
      */
     @Override
@@ -456,7 +470,7 @@ public class OrderserviceImpl implements Orderservice {
         //根据id查询订单
         Orders ordersDB = orderMapper.getById(id);
         //订单存在且状态为4（派送中）才可以完成
-        if (ordersDB == null || !ordersDB.getStatus().equals(Orders.DELIVERY_IN_PROGRESS)){
+        if (ordersDB == null || !ordersDB.getStatus().equals(Orders.DELIVERY_IN_PROGRESS)) {
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
         Orders orders = Orders.builder()
